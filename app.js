@@ -13,11 +13,16 @@ io.on('connection', function(socket){
 
   setTimeout(function() {
     // socket.send('Sent message 4 seconds after the connection!');
-    socket.send(sup);
+    // socket.send(sup);
+    socket.emit('testerEvent', { description: 'A custom event named testerEvent!' })
   }, 4000);
 
-  socket.on('disconnect', function () {
+  socket.on('disconnect', function() {
     console.log('A user disconnected');
+  });
+
+  socket.on('clientEvent', function(data) {
+    console.log(data)
   });
 
 });

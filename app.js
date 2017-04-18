@@ -13,17 +13,11 @@ app.get('/', function(req, res){
 io.on('connection', function(socket){
   console.log('A user connected');
   clients++;
-  io.sockets.emit('broadcast', { description: clients + ' clients connected!'});
-
-  setTimeout(function() {
-    // socket.send('Sent message 4 seconds after the connection!');
-    // socket.send(sup);
-    socket.emit('testerEvent', { description: 'A custom event named testerEvent!' })
-  }, 4000);
+  socket.emit('newclientconnect', { description: 'Hey, welcome!' });
+  socket.broadcast.emit('newclientconnect', { description: clients + ' clients connected!' });
 
   socket.on('disconnect', function() {
     console.log('A user disconnected');
-    clients--;
     socket.on('disconnect', function () {
 	       clients--;
 	         io.sockets.emit('broadcast',{ description: clients + ' clients connected!'});

@@ -8,6 +8,11 @@
 			  document.body.innerHTML = '';
 			  document.write(data.description);
 	  });
+    var socket = io('/my-namespace');
+	  socket.on('hi',function(data){
+			  document.body.innerHTML = '';
+			  document.write(data);
+	  });
   </script>
   <body>Hello world</body>
 </html>

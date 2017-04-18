@@ -4,12 +4,16 @@ var io = require('socket.io')(http);
 
 var sup = [1, 2, 3]
 
+var clients = 0;
+
 app.get('/', function(req, res){
   res.sendfile('index.html');
 });
 
 io.on('connection', function(socket){
   console.log('A user connected');
+  clients++;
+  io.sockets.emit('broadcast', { description: clients + ' clients connected!'});
 
   setTimeout(function() {
     // socket.send('Sent message 4 seconds after the connection!');
@@ -19,6 +23,11 @@ io.on('connection', function(socket){
 
   socket.on('disconnect', function() {
     console.log('A user disconnected');
+    clients--;
+    socket.on('disconnect', function () {
+	       clients--;
+	         io.sockets.emit('broadcast',{ description: clients + ' clients connected!'});
+             });
   });
 
   socket.on('clientEvent', function(data) {
